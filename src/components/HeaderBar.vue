@@ -3,14 +3,21 @@ import { ref, watch } from "vue";
 import megaMenuItems from "../assets/menu";
 import panelMenuItems from "../assets/menuPanel";
 import { useRoute, useRouter } from "vue-router";
+import { useAuthStore } from "../stores/auth";
+import { storeToRefs } from "pinia";
+import { useI18n } from "vue-i18n";
 
 const expandedKeys = ref({});
 const menuItems = ref(megaMenuItems);
 const menuPanelItems = ref(panelMenuItems);
 const overlayVisible = ref(false);
 
+const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
+const { logout } = useAuthStore();
+const { user } = storeToRefs(useAuthStore());
+
 watch(
   () => route.fullPath,
   () => {
@@ -21,6 +28,17 @@ watch(
     }
   }
 );
+
+const userMenuItems = ref([
+  {
+    label: t("signOut"),
+    icon: "pi pi-sign-out",
+    command: () => {
+      logout();
+      router.push("/login");
+    },
+  },
+]);
 </script>
 
 <template>
@@ -41,10 +59,10 @@ watch(
             icon="pi pi-bars"
             @click="overlayVisible = true"
           />
-          <Button
-            class="p-button-rounded"
+          <SplitButton
+            :label="user.username"
             icon="pi pi-user"
-            @click="router.push('/login')"
+            :model="userMenuItems"
           />
         </div>
       </template>

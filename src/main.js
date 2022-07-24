@@ -20,6 +20,9 @@ import PanelMenu from "primevue/panelmenu";
 import InputText from "primevue/inputtext";
 import Checkbox from "primevue/checkbox";
 import Dropdown from "primevue/dropdown";
+import SplitButton from "primevue/splitbutton";
+import Toast from "primevue/toast";
+import ToastService from "primevue/toastservice";
 import { createI18n } from "vue-i18n";
 
 import en from "./locales/en";
@@ -43,6 +46,7 @@ app.use(createPinia());
 app.use(router);
 app.use(i18n);
 app.use(PrimeVue, { ripple: true });
+app.use(ToastService);
 
 app.component("LayoutPublic", LayoutPublic);
 app.component("LayoutPrivate", LayoutPrivate);
@@ -54,5 +58,7 @@ app.component("Sidebar", Sidebar);
 app.component("InputText", InputText);
 app.component("Checkbox", Checkbox);
 app.component("Dropdown", Dropdown);
+app.component("SplitButton", SplitButton);
+app.component("Toast", Toast);
 
 app.mount("#app");

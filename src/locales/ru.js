@@ -13,8 +13,13 @@ const ru = {
   confirmPassword: "Подтвердить пароль",
   rememberMe: "Запомнить меня",
   signIn: "Войти",
+  signOut: "Выйти",
   signUp: "Зарегистрироваться",
   resetPassword: "Сбросить пароль",
+  successToastTitle: "Успешно!",
+  successToastMessage: "Операция прошла успешно!",
+  errorToastTitle: "Ошибка!",
+  errorToastMessage: "Что-то пошло не так!",
   errors: {
     required: "Поле должно быть заполнено",
     email: "E-Mail введён неверно",

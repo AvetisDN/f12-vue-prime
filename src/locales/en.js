@@ -12,8 +12,13 @@ const en = {
   confirmPassword: "Confirm Password",
   rememberMe: "Remember Me",
   signIn: "Sign In",
+  signOut: "Sign Out",
   signUp: "Sign Up",
   resetPassword: "Reset Password",
+  successToastTitle: "Success!",
+  successToastMessage: "Operation finished successfully!",
+  errorToastTitle: "Error!",
+  errorToastMessage: "Mission failed, we'll got him next time!",
   errors: {
     required: "Has to be filled",
     email: "E-Mail is incorrect",

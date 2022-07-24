@@ -4,13 +4,19 @@ import useVuelidate from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
 import { useI18n } from "vue-i18n";
 import axios from "axios";
+import { useAuthStore } from "../stores/auth";
+import { useRouter } from "vue-router";
+import { useToast } from "primevue/usetoast";
 
 const { t } = useI18n();
+const router = useRouter();
+const toast = useToast();
+const { setUser, setJwt } = useAuthStore();
 
 const form = reactive({
   email: "",
   password: "",
-  remember: false,
+  remember: true,
 });
 
 const showPass = ref(false);
@@ -22,17 +28,31 @@ const rules = {
 };
 
 const v$ = useVuelidate(rules, form, { $lazy: true });
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const handleSubmit = async () => {
   try {
-    const { data } = await axios.post("http://localhost:1337/api/auth/local", {
+    const { data } = await axios.post(`${apiUrl}/auth/local`, {
       identifier: form.email,
       password: form.password,
     });
-    console.log(data.user, data.jwt);
     localStorage.pvJWT = data.jwt;
+    setUser(data.user);
+    setJwt(data.jwt);
+    router.push("/");
+    toast.add({
+      severity: "success",
+      summary: t("successToastTitle"),
+      detail: t("successToastMessage"),
+      life: 3000,
+    });
   } catch (error) {
-    console.error(error);
+    toast.add({
+      severity: "error",
+      summary: t("errorToastTitle"),
+      detail: t("errorToastMessage"),
+      life: 3000,
+    });
   }
 };
 </script>

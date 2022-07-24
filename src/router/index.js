@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
+import { storeToRefs } from "pinia";
+import { useAuthStore } from "../stores/auth";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -9,6 +11,7 @@ const router = createRouter({
       name: "home",
       component: HomeView,
       meta: {
+        isPrivate: true,
         layout: "LayoutPrivate",
       },
     },
@@ -17,6 +20,7 @@ const router = createRouter({
       name: "blog",
       component: () => import("../views/BlogView.vue"),
       meta: {
+        isPrivate: true,
         layout: "LayoutPrivate",
       },
     },
@@ -25,6 +29,7 @@ const router = createRouter({
       name: "blog",
       component: () => import("../views/BlogView.vue"),
       meta: {
+        isPrivate: true,
         layout: "LayoutPrivate",
       },
     },
@@ -33,6 +38,7 @@ const router = createRouter({
       name: "login",
       component: () => import("../views/LoginView.vue"),
       meta: {
+        isPrivate: false,
         layout: "LayoutPublic",
       },
     },
@@ -41,6 +47,7 @@ const router = createRouter({
       name: "register",
       component: () => import("../views/RegisterView.vue"),
       meta: {
+        isPrivate: false,
         layout: "LayoutPublic",
       },
     },
@@ -49,10 +56,21 @@ const router = createRouter({
       name: "forgot-password",
       component: () => import("../views/ForgotView.vue"),
       meta: {
+        isPrivate: false,
         layout: "LayoutPublic",
       },
     },
   ],
+});
+
+router.beforeEach((to, from) => {
+  const { user } = storeToRefs(useAuthStore());
+  if (!user.value && to.meta.isPrivate) {
+    router.replace("/login");
+  }
+  if (user.value && !to.meta.isPrivate) {
+    router.replace("/");
+  }
 });
 
 export default router;
